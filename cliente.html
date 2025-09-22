@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Chat WebSocket</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
+    #log { border: 1px solid #ccc; height: 300px; overflow-y: auto; padding: 10px; margin: 10px 0; }
+    input { width: 200px; padding: 5px; }
+    button { padding: 5px 15px; }
+  </style>
+</head>
+<body>
+  <h3>💬 Chat WebSocket Simple</h3>
+  
+  <input id="username" placeholder="Tu nombre" value="Usuario1" />
+  <br><br>
+  
+  <div id="log"></div>
+  
+  <input id="msg" placeholder="Escribe tu mensaje..." />
+  <button id="send">Enviar</button>
+
+  <script>
+    // Configuración del servidor WebSocket
+    let port = 8765;
+    let ip = "192.168.0.11";
+
+
+    // Mostrar mensajes en pantalla
+    const log = (t) => {
+      const d = document.getElementById("log");// Obtener el div donde se muestran los mensajes
+      const time = new Date().toLocaleTimeString();// Obtener la hora actual
+      d.innerHTML += `<div>[${time}] ${t}</div>`;// Añadir el mensaje al div
+      d.scrollTop = d.scrollHeight;// scroll automático al final
+    };
+
+    // Crear conexión WebSocket
+    const socket = new WebSocket(`ws://${ip}:${port}`);
+
+    // Eventos WebSocket
+
+    socket.onopen = () => log("✅ Conectado al chat");
+    
+    socket.onmessage = (e) => {
+      // Si el mensaje contiene ":", es de otro usuario
+      if (e.data.includes(":")) {
+        log(`📨 ${e.data}`);// mostrar mensaje en pantalla
+      } else {
+        log(`📨 ${e.data}`);
+      }
+    };
+
+
+    
+    socket.onclose = () => log("❌ Desconectado del chat");
+    socket.onerror = (err) => log("⚠ Error de conexión");
+
+
+    // Enviar mensajes
+    const sendMessage = () => {
+      //Obtener elemenetos html
+      const msgInput = document.getElementById("msg");
+      const usernameInput = document.getElementById("username");
+      // obtener valores y limpiar espacios
+      const message = msgInput.value.trim();
+      const username = usernameInput.value.trim() || "Anónimo";
+      // Verificar que haya mensaje y la conexión esté abierta
+      if (message && socket.readyState === WebSocket.OPEN) {
+        const fullMessage = `${username}: ${message}`;
+        socket.send(fullMessage);
+        msgInput.value = "";// Limpiar input
+      }
+    };
+
+    // Enviar mensaje al hacer clic en el botón
+    document.getElementById("send").onclick = sendMessage;
+    
+    // Enviar mensaje con Enter
+    document.getElementById("msg").onkeypress = (e) => {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    };
+    
+    // Focus en el input de mensaje
+    document.getElementById("msg").focus();
+  </script>
+</body>
+</html>
