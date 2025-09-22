@@ -1,9 +1,9 @@
-# 📡 Chat WebSocket - Dos Arquitecturas
+# 📡 Chat WebSocket - Dos enfoques
 
 Proyecto educativo que implementa un **sistema de chat en tiempo real** usando dos enfoques diferentes:
 
-1. **Stack 1**: WebSocket Puro (Minimalista)
-2. **Stack 2**: HTTP + WebSocket (Profesional)
+1. **Stack 1**: WebSocket Puro 
+2. **Stack 2**: HTTP + WebSocket 
 
 ---
 
