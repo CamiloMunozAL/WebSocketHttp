@@ -155,3 +155,4 @@ Chat profesional que combina servidor HTTP para archivos y WebSocket para comuni
 - Patrón fundamental para aplicaciones tiempo real
 
 ---
+Desarrollado por [Camilo Muñoz, Sergio Castellanos, Juan Pablo Medina]
